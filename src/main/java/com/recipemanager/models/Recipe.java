@@ -13,9 +13,10 @@ import java.util.List;
 @Node
 public class Recipe {
     @Id
+    @JsonProperty
     private String id;
 
-    @Property("__elementId__")  // Mapping to the elementId in the database if needed
+    @Property("__elementId__")
     @JsonProperty("elementId")
     private Long elementId;
 
@@ -32,12 +33,15 @@ public class Recipe {
     private String skillLevel;
 
     @Property("description")
+    @JsonProperty
     private String description;
 
     @Property("cookingTime")
+    @JsonProperty
     private Integer cookingTime;
 
     @Property("preparationTime")
+    @JsonProperty
     private Integer preparationTime;
 
     @Property("__nodeLabels__")
