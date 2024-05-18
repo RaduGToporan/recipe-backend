@@ -29,9 +29,15 @@ public class RecipeController {
     @GetMapping("/recipes")
     public Page<Recipe> getAllRecipes(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "20") int size
+            @RequestParam(name = "size", defaultValue = "20") int size,
+            @RequestParam(name = "name", required = false) String name
     ) {
-        return recipeRepository.findAllByOrderByNameAsc(PageRequest.of(page, size));
+        PageRequest pageRequest = PageRequest.of(page, size);
+        if (name != null && !name.isEmpty()) {
+            return recipeRepository.findByNameContainingIgnoreCase(name, pageRequest);
+        } else {
+            return recipeRepository.findAllByOrderByNameAsc(pageRequest);
+        }
     }
 
     @GetMapping("/recipes/{id}")

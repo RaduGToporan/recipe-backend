@@ -14,4 +14,5 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
 
     Page<Recipe> findAllByOrderByNameAsc(Pageable pageable);
 
+    Page<Recipe> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }
