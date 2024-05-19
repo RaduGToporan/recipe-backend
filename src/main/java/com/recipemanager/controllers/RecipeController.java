@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class RecipeController {
@@ -30,10 +32,15 @@ public class RecipeController {
     public Page<Recipe> getAllRecipes(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "20") int size,
-            @RequestParam(name = "name", required = false) String name
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "ingredients", required = false) List<String> ingredients
     ) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        if (name != null && !name.isEmpty()) {
+        if (name != null && !name.isEmpty() && ingredients != null && !ingredients.isEmpty()) {
+            return recipeRepository.findByIngredientsAndName(name, ingredients, pageRequest);
+        } else if (ingredients != null && !ingredients.isEmpty()) {
+            return recipeRepository.findByIngredients(ingredients, pageRequest);
+        } else if (name != null && !name.isEmpty()) {
             return recipeRepository.findByNameContainingIgnoreCase(name, pageRequest);
         } else {
             return recipeRepository.findAllByOrderByNameAsc(pageRequest);
