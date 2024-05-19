@@ -24,4 +24,8 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
     @Query(value = "MATCH (r:Recipe) WHERE r.name =~ ('.*' + $name + '.*') AND ALL(ingName IN $ingredientNames WHERE EXISTS ((r)-[:CONTAINS_INGREDIENT]->(:Ingredient {name: ingName}))) RETURN r ORDER BY r.name ASC",
             countQuery = "MATCH (r:Recipe) WHERE r.name =~ ('.*' + $name + '.*') AND ALL(ingName IN $ingredientNames WHERE EXISTS ((r)-[:CONTAINS_INGREDIENT]->(:Ingredient {name: ingName}))) RETURN count(r)")
     Page<Recipe> findByIngredientsAndName(String name, List<String> ingredientNames, Pageable pageable);
+
+    @Query(value = "MATCH (a:Author)-[:WROTE]->(r:Recipe) WHERE a.name = $authorName RETURN r",
+            countQuery = "MATCH (a:Author)-[:WROTE]->(r:Recipe) WHERE a.name = $authorName RETURN count(r)")
+    Page<Recipe> findByAuthorName(String authorName, Pageable pageable);
 }

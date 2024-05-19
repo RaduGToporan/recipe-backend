@@ -24,9 +24,9 @@ public class Recipe {
     @JsonProperty
     private String name;
 
-    @Property("author")
+    @Relationship(type = "WROTE", direction = Relationship.Direction.INCOMING)
     @JsonProperty
-    private String author;
+    private Author author;
 
     @Property("skillLevel")
     @JsonProperty

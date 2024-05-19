@@ -47,6 +47,14 @@ public class RecipeController {
         }
     }
 
+    @GetMapping("/recipes/author")
+    public Page<Recipe> getRecipesByAuthorName(@RequestParam String authorName,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return recipeRepository.findByAuthorName(authorName, pageRequest);
+    }
+
     @GetMapping("/recipes/{id}")
     public Recipe getRecipeById(@PathVariable String id) {
         return recipeRepository.findById(id).orElse(null);
